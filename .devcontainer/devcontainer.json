@@ -1,0 +1,20 @@
+{
+  "name": "AWS Cloud Dev Environment",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "amazonwebservices.aws-toolkit-vscode",
+        "hashicorp.terraform",
+        "ms-python.python"
+      ]
+    }
+  },
+  "forwardPorts": [3000],
+  "containerEnv": {
+    "AWS_REGION": "ap-southeast-1"
+  },
+  "postCreateCommand": "aws --version && terraform -version && sam --version"
+}
