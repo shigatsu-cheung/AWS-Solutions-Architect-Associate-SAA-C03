@@ -14,7 +14,8 @@
   },
   "forwardPorts": [3000],
   "containerEnv": {
-    "AWS_REGION": "ap-southeast-1"
+    "AWS_REGION": "ap-southeast-1",
+    "AWS_CLI_AUTO_PROMPT": "on-partial"
   },
   "postCreateCommand": "aws --version && terraform -version && sam --version"
 }
