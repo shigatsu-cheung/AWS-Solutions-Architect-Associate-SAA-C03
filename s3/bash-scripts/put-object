@@ -1,0 +1,27 @@
+#! /usr/bin/env bash
+echo "== Put Object in S3 Bucket =="
+
+#Creates random 5 file with "Hello World" content and uploads to specified S3 bucket
+#Check if bucket name is provided
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <bucket-name>"
+    exit 1
+fi
+BUCKET_NAME=$1
+#Create temporary directory for files
+TEMP_DIR=$(mktemp -d)
+echo "Created temporary directory: $TEMP_DIR"
+#Create and upload 5 files
+for i in {1..5}; do
+    FILE_PATH="$TEMP_DIR/file_$i.txt"
+    echo "Hello World from file $i" > "$FILE_PATH"
+    echo "Uploading $FILE_PATH to s3://$BUCKET_NAME/"
+    #https://docs.aws.amazon.com/cli/latest/reference/s3api/put-object.html
+    aws s3api put-object \
+    --bucket "$BUCKET_NAME" \
+    --key "file_$i.txt" \
+    --body "$FILE_PATH"
+done
+#Clean up temporary directory
+rm -rf "$TEMP_DIR"
+echo "Cleaned up temporary directory: $TEMP_DIR"

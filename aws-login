@@ -1,0 +1,5 @@
+#Check aws login
+aws sts get-caller-identity
+
+#Configure aws
+aws configure

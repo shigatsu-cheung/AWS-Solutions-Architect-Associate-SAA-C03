@@ -1,0 +1,18 @@
+#! /usr/bin/env bash
+echo "== Create S3 Bucket =="
+#Check if bucket name and region are provided
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 <bucket-name> <region>"
+    exit 1
+fi
+
+BUCKET_NAME=$1
+REGION=$2
+
+#https://docs.aws.amazon.com/cli/latest/reference/s3api/create-bucket.html
+aws s3api create-bucket \
+--bucket "$BUCKET_NAME" \
+--region "$REGION" \
+--create-bucket-configuration LocationConstraint="$REGION" \
+--query Location \
+--output text
