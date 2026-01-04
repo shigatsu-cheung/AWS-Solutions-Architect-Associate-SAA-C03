@@ -11,3 +11,9 @@ BUCKET_NAME=$1
 #https://docs.aws.amazon.com/cli/latest/reference/s3api/delete-bucket.html
 aws s3api delete-bucket \
 --bucket "$BUCKET_NAME"
+
+
+#Delete recursively in case bucket is not empty
+#https://docs.aws.amazon.com/cli/latest/reference/s3/rm.html
+aws s3 rm "s3://$BUCKET_NAME" --recursive
+echo "Deleted S3 bucket: $BUCKET_NAME"
