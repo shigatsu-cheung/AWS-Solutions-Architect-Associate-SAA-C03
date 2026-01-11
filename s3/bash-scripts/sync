@@ -1,1 +1,29 @@
 #! /usr/bin/env bash
+echo "== Sync Local Directory to S3 Bucket =="
+
+#Check if bucket name is provided
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <bucket-name>"
+    exit 1
+fi
+BUCKET_NAME=$1
+#Create temporary directory for files
+TEMP_DIR="/tmp/s3-bash-scripts"
+mkdir -p "$TEMP_DIR"
+
+echo "Created temporary directory: $TEMP_DIR"
+
+#Create and upload 5 files
+for i in {1..5}; do
+    FILE_PATH="$TEMP_DIR/file_$i.txt"
+    echo "Hello World from file SYNC v2 $i" > "$FILE_PATH"
+done
+#print created files
+tree $TEMP_DIR
+
+#https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html
+aws s3 sync "$TEMP_DIR/" "s3://$BUCKET_NAME/"
+
+#Clean up temporary directory
+#rm -rf "$TEMP_DIR"
+#echo "Cleaned up temporary directory: $TEMP_DIR"

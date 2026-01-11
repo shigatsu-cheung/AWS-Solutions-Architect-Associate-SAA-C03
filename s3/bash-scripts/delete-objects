@@ -1,0 +1,18 @@
+#! /usr/bin/env bash
+echo "== Delete Objects in S3 Bucket =="
+
+#Check if bucket name is provided
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <bucket-name>"
+    exit 1
+fi
+
+BUCKET_NAME=$1
+BUCKET_OBJECTS=$(aws s3api list-objects-v2 --bucket "$BUCKET_NAME" --query='{Objects: Contents[].{Key: Key}}')
+echo "Objects to delete: $BUCKET_OBJECTS"
+
+aws s3api delete-objects \
+    --bucket "$BUCKET_NAME" \
+    --delete "$BUCKET_OBJECTS"
+echo "Deleted all objects in S3 bucket: $BUCKET_NAME"
+

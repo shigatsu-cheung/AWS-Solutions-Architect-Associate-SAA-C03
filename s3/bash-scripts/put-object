@@ -9,8 +9,11 @@ if [ "$#" -ne 1 ]; then
 fi
 BUCKET_NAME=$1
 #Create temporary directory for files
-TEMP_DIR=$(mktemp -d)
+TEMP_DIR="/tmp/s3-bash-scripts"
+mkdir -p "$TEMP_DIR"
+
 echo "Created temporary directory: $TEMP_DIR"
+
 #Create and upload 5 files
 for i in {1..5}; do
     FILE_PATH="$TEMP_DIR/file_$i.txt"
@@ -22,6 +25,21 @@ for i in {1..5}; do
     --key "file_$i.txt" \
     --body "$FILE_PATH"
 done
+#print created files
+tree $TEMP_DIR
+
+
+
+tmpfilename="/tmp/s3-bash-scripts/put-object-done.txt"
+touch "$tmpfilename"
+OBJECT_KEY=$(basename "$tmpfilename")
+echo "Uploading $tmpfilename to s3://$BUCKET_NAME/$OBJECT_KEY"
+#https://docs.aws.amazon.com/cli/latest/reference/s3api/put-object.html
+aws s3api put-object \
+    --bucket "$BUCKET_NAME" \
+    --key "put-object-done.txt" \
+    --body "$tmpfilename"
+
 #Clean up temporary directory
-rm -rf "$TEMP_DIR"
-echo "Cleaned up temporary directory: $TEMP_DIR"
+#rm -rf "$TEMP_DIR"
+#echo "Cleaned up temporary directory: $TEMP_DIR"

@@ -3,6 +3,9 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
+  "features": {
+    "ghcr.io/devcontainers/features/powershell:1": {}
+  },
   "customizations": {
     "vscode": {
       "extensions": [
@@ -17,5 +20,5 @@
     "AWS_REGION": "ap-southeast-2",
     "AWS_CLI_AUTO_PROMPT": "on-partial"
   },
-  "postCreateCommand": "aws --version && terraform -version && sam --version"
+  "postCreateCommand": "aws --version && terraform -version && sam --version && apt-get update && apt-get install tree"
 }
